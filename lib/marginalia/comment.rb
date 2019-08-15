@@ -159,7 +159,7 @@ module Marginalia
         end
 
         def self.connection_config
-          return if marginalia_adapter.pool.nil?
+          return unless marginalia_adapter.pool.respond_to?(:spec)
           marginalia_adapter.pool.spec.config
         end
       end
