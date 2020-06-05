@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'socket'
 
 module Marginalia
@@ -18,11 +20,11 @@ module Marginalia
     end
 
     def self.construct_comment
-      ret = ''
+      ret = String.new
       self.components.each do |c|
         component_value = self.send(c)
         if component_value.present?
-          ret << "#{c.to_s}:#{component_value.to_s},"
+          ret << "#{c}:#{component_value},"
         end
       end
       ret.chop!
@@ -106,7 +108,8 @@ module Marginalia
       end
 
       def self.line
-        Marginalia::Comment.lines_to_ignore ||= /\.rvm|gem|vendor\/|marginalia|rbenv/
+        Marginalia::Comment.lines_to_ignore ||= /\.rvm|gem|vendor\/|marginalia|rbenv|monitor\.rb.*mon_synchronize/
+
         last_line = caller.detect do |line|
           line !~ Marginalia::Comment.lines_to_ignore
         end
